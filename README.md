@@ -1,6 +1,6 @@
 # About 
 
-This project extracts Fortune - 1000 companies data from hidden url of Fortune website.
+This project extracts Fortune - 1000 companies data from a hidden url of the Fortune website.
 
 # TODO
 
