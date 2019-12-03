@@ -1,6 +1,6 @@
 {
   "name": "companies-list",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Companies data in csv from fortune 1000 list",
   "main": "index.ts",
   "repository": "https://github.com/srinivasreddy/companies-list",
@@ -18,9 +18,6 @@
     "start": "tsc && node dist/app.js",
     "build": "tsc"
   },
-  // "unpkg": "dist/redux.js",
-  // "module": "es/redux.js",
-  // "types": "types/index.d.ts",
   "devDependencies": {
     "@types/node": "^12.12.12",
     "nodemon": "^2.0.1",
