@@ -6,6 +6,11 @@
     "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true
-  }
+    "forceConsistentCasingInFileNames": true,
+    "declaration" : true,
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }
