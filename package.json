@@ -3,13 +3,24 @@
   "version": "0.0.2",
   "description": "Companies data in csv from fortune 1000 list",
   "main": "index.ts",
-  "repository": "https://github.com/srinivasreddy/companies-list.git",
+  "repository": "https://github.com/srinivasreddy/companies-list",
+  "bugs": "https://github.com/reduxjs/srinivasreddy/companies-list/issues",
+  "keywords": [
+    "scrape",
+    "fortune-500",
+    "data",
+    "puppeteer",
+    "csv"
+  ],
   "author": "Srinivas Reddy Thatiparthy <thatiparthysreenivas@gmail.com>",
   "license": "MIT",
   "scripts": {
     "start": "tsc && node dist/app.js",
     "build": "tsc"
   },
+  // "unpkg": "dist/redux.js",
+  // "module": "es/redux.js",
+  // "types": "types/index.d.ts",
   "devDependencies": {
     "@types/node": "^12.12.12",
     "nodemon": "^2.0.1",
