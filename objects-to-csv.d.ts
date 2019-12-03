@@ -1,1 +1,1 @@
-declare module 'objects-to-csv';
+declare module "objects-to-csv";

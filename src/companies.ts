@@ -1,6 +1,37 @@
 import ObjectsToCsv from "objects-to-csv";
 import puppeteer from "puppeteer";
 
+interface IItem {
+    url: string;
+    rank: string;
+    revenues: string;
+    revchange: string;
+    profits: string;
+    prftchange: string;
+    assets: string;
+    mktval: string;
+    rankchange1000: string;
+    employees: string;
+    rankchange: string;
+    name: string;
+    sector: string;
+    industry: string;
+    hqcity: string;
+    hqstate: string;
+    rankgain: string;
+    rankdrop: string;
+    newcomer: string;
+    profitable: string;
+    ceofounder: string;
+    ceowoman: string;
+    jobgrowth: string;
+    global500_y_n: string;
+    best_companies_y_n: string;
+    worlds_most_admired_companies_y_n: string;
+    change_the_world_y_n: string;
+    _100_fastest_growing_companies_y_n: string;
+}
+
 interface ISortableObject {
     description: string;
     importField: string;
@@ -40,11 +71,6 @@ interface ISecondObject {
     items: IItemsObject [];
 }
 
-interface ICsvObject {
-    companyName: string;
-    url: string;
-}
-
 export class Crawler {
     private url: string;
     private waitFor: number;
@@ -67,41 +93,56 @@ export class Crawler {
             results = await page.evaluate(() => {
                 return JSON.parse((document.querySelector("body") as HTMLBodyElement).innerText);
             });
-            console.log(results);
             this.results.push.apply(this.results, results);
         }while (results.results && results.results.length > 0);
         browser.close();
         return results;
     }
 
-    public async generateCSVObjectList(): Promise<ICsvObject[]> {
+    public async generateCSVObjectList(): Promise<IItem []> {
         const results: [IFirstObject, ISecondObject] = await this.run();
         const result: ISecondObject = results[1];
         const items: IItemsObject [] = result.items;
-        const csvObjectList: ICsvObject [] = [];
+        const csvObjectList: IItem [] = [];
         for (const item of items) {
-            const field: IFieldsObject = item.fields.find((obj: IFieldsObject) => obj.key === "name")!;
-            const permalink: string = item.permalink;
-            csvObjectList.push({companyName: field.value, url: permalink});
+            let csvObject =  {} as any;
+            for (const field of item.fields) {
+                if (field.key.startsWith("100")) {
+                    csvObject["_" + field.key] = field.value;
+                }
+                csvObject[field.key] = field.value;
+            }
+            csvObject.url = item.permalink;
+            csvObject = csvObject as IItem;
+            console.log(`${JSON.stringify(csvObject, undefined, 2)}`);
+            csvObjectList.push(csvObject);
         }
         return csvObjectList;
     }
 
     public async generateCSVFile() {
-        const newCsvList: ICsvObject [] = [];
-        const csvArray: ICsvObject [] =  await this.generateCSVObjectList();
+        const csvArray: IItem [] =  await this.generateCSVObjectList();
+        const csv = new ObjectsToCsv(csvArray);
+        await csv.toDisk("./fortune_500.csv");
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
         for (const csvObject of csvArray) {
+            try {
             await page.goto(csvObject.url);
             page.waitFor(this.waitFor);
-            const url = await page.evaluate(() => {
+
+            const href = await page.evaluate(() => {
                 return (document.querySelector("table tbody tr td a") as HTMLAnchorElement).href;
             });
-            newCsvList.push({companyName: csvObject.companyName, url});
+            csvObject.url = href;
+            console.log(`name: ${csvObject.name}, url: ${csvObject.url}`);
+        } catch {
+            csvObject.url = "";
+            console.log(`name: ${csvObject.name}, url: ${csvObject.url}`);
         }
-        const csv = new ObjectsToCsv(newCsvList);
-        await csv.toDisk("./test.csv");
+        }
+        const newCsv = new ObjectsToCsv(csvArray);
+        await newCsv.toDisk("./test.csv");
         await browser.close();
     }
 }
