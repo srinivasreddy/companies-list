@@ -2,6 +2,7 @@ import ObjectsToCsv from "objects-to-csv";
 import puppeteer from "puppeteer";
 
 export interface IItem {
+    title?: string;
     url: string;
     rank: string;
     revenues: string;
@@ -144,10 +145,10 @@ export class Crawler {
                 return (document.querySelector("table tbody tr td a") as HTMLAnchorElement).href;
             });
             csvObject.url = href;
-            console.log(`name: ${csvObject.name}, url: ${csvObject.url}`);
+            console.log(`name: ${csvObject.name || csvObject.title}, url: ${csvObject.url}`);
         } catch {
             csvObject.url = "";
-            console.log(`name: ${csvObject.name}, url: ${csvObject.url}`);
+            console.log(`name: ${csvObject.name || csvObject.title}, url: ${csvObject.url}`);
         }
         }
         const newCsv = new ObjectsToCsv(csvArray);
