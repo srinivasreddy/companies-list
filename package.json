@@ -1,6 +1,6 @@
 {
   "name": "companies-list",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Companies data in csv format from fortune 1000 list",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -14,7 +14,9 @@
     "puppeteer",
     "csv"
   ],
-  "files": ["lib/**/*"],
+  "files": [
+    "lib/**/*"
+  ],
   "author": "Srinivas Reddy Thatiparthy <thatiparthysreenivas@gmail.com>",
   "license": "MIT",
   "scripts": {
@@ -28,6 +30,6 @@
     "objects-to-csv": "^1.3.5",
     "puppeteer": "^2.0.0"
   },
-  "prepare" : "npm run build",
+  "prepare": "npm run build",
   "prepublish": "tsc"
 }
