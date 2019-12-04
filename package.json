@@ -1,16 +1,22 @@
 {
   "name": "companies-list",
-  "version": "0.0.3",
-  "description": "Companies data in csv from fortune 1000 list",
+  "version": "0.0.4",
+  "description": "Companies data in csv format from fortune 1000 list",
   "main": "index.ts",
   "repository": "https://github.com/srinivasreddy/companies-list",
-  "bugs": "https://github.com/reduxjs/srinivasreddy/companies-list/issues",
+  "bugs": "https://github.com/srinivasreddy/companies-list/issues",
   "keywords": [
-    "scrape",
+    "webscraping",
+    "companies",
     "fortune-500",
     "data",
     "puppeteer",
     "csv"
+  ],
+  "files": [
+    "src/app.ts",
+    "src/companies.ts",
+    "objects-to-csv.d.ts"
   ],
   "author": "Srinivas Reddy Thatiparthy <thatiparthysreenivas@gmail.com>",
   "license": "MIT",
@@ -20,7 +26,6 @@
   },
   "devDependencies": {
     "@types/node": "^12.12.12",
-    "nodemon": "^2.0.1",
     "tslint": "^5.20.1"
   },
   "dependencies": {
