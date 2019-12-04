@@ -13,8 +13,9 @@
     "puppeteer",
     "csv"
   ],
+  "types": "src/types",
   "files": [
-    "src/app.ts",
+    "src/index.ts",
     "src/companies.ts",
     "objects-to-csv.d.ts"
   ],
@@ -32,6 +33,5 @@
     "objects-to-csv": "^1.3.5",
     "puppeteer": "^2.0.0"
   },
-  "types": "index.d.ts",
   "prepublish": "tsc"
 }
