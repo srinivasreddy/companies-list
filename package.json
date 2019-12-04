@@ -1,6 +1,6 @@
 {
   "name": "companies-list",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Companies data in csv format from fortune 1000 list",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
