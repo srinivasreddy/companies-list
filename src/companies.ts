@@ -1,7 +1,7 @@
 import ObjectsToCsv from "objects-to-csv";
 import puppeteer from "puppeteer";
 
-interface IItem {
+export interface IItem {
     url: string;
     rank: string;
     revenues: string;
@@ -29,10 +29,10 @@ interface IItem {
     best_companies_y_n: string;
     worlds_most_admired_companies_y_n: string;
     change_the_world_y_n: string;
-    _100_fastest_growing_companies_y_n: string;
+    hundred_fastest_growing_companies_y_n: string;
 }
 
-interface ISortableObject {
+export interface ISortableObject {
     description: string;
     importField: string;
     order: string;
@@ -42,7 +42,7 @@ interface ISortableObject {
     type: string;
 }
 
-interface IFilterableObject {
+export interface IFilterableObject {
     filterable: string;
     importField: string;
     options: string [] ;
@@ -51,34 +51,44 @@ interface IFilterableObject {
     type: string;
 }
 
-interface IFirstObject {
+export interface IFirstObject {
     filterable: IFilterableObject;
     key: string;
     sortable: ISortableObject [];
 }
 
-interface IFieldsObject {
+export interface IFieldsObject {
     key: string;
     value: string;
 }
-interface IItemsObject {
+
+export interface IItemsObject {
     fields: IFieldsObject [];
     permalink: string;
 }
 
-interface ISecondObject {
+export interface ISecondObject {
     key: string;
     items: IItemsObject [];
 }
+
+const dikt: Map<number, string> = new Map();
+dikt.set(2018, "https://content.fortune.com/wp-json/irving/v1/data/franchise-search-results?list_id=2358051");
+dikt.set(2019, "https://content.fortune.com/wp-json/irving/v1/data/franchise-search-results?list_id=2611932");
 
 export class Crawler {
     private url: string;
     private waitFor: number;
     private results: string [];
+    private path: string;
 
-    constructor(url: string) {
-        this.url = url;
-        this.waitFor = 5000;
+    constructor(year: number, path: string, waitFor: number = 5000) {
+        if (!dikt.has(year)) {
+            throw Error(`Currently there is no url to fetch the data in the year ${year}`);
+        }
+        this.url = dikt.get(year)!;
+        this.path = path;
+        this.waitFor = waitFor;
         this.results = [];
     }
 
@@ -108,9 +118,10 @@ export class Crawler {
             let csvObject =  {} as any;
             for (const field of item.fields) {
                 if (field.key.startsWith("100")) {
-                    csvObject["_" + field.key] = field.value;
+                    csvObject.hundred_fastest_growing_companies_y_n = field.value;
+                } else {
+                    csvObject[field.key] = field.value;
                 }
-                csvObject[field.key] = field.value;
             }
             csvObject.url = item.permalink;
             csvObject = csvObject as IItem;
@@ -122,8 +133,6 @@ export class Crawler {
 
     public async generateCSVFile() {
         const csvArray: IItem [] =  await this.generateCSVObjectList();
-        const csv = new ObjectsToCsv(csvArray);
-        await csv.toDisk("./fortune_500.csv");
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
         for (const csvObject of csvArray) {
@@ -142,7 +151,7 @@ export class Crawler {
         }
         }
         const newCsv = new ObjectsToCsv(csvArray);
-        await newCsv.toDisk("./test.csv");
+        await newCsv.toDisk(this.path);
         await browser.close();
     }
 }

@@ -1,10 +1,10 @@
 
-import {Crawler} from "./companies";
+import { Crawler } from "./companies";
 
 async function start() {
-    const url = "https://content.fortune.com/wp-json/irving/v1/data/franchise-search-results?list_id=2611932";
-    const crawler = new Crawler(url);
+    const crawler = new Crawler(2019, "./srinivas.csv");
     await crawler.generateCSVFile();
 }
-
 start();
+
+export * from "./companies";
