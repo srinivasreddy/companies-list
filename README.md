@@ -1,3 +1,10 @@
+# Update - 12-12-2019
+
+This project is buggy. Not working, please do not use it. 
+
+I am going to clean up this mess very soon.
+
+
 # About 
 
 This project extracts Fortune - 1000 companies data from a hidden url of the Fortune website.
